@@ -1,6 +1,5 @@
 <div align="center">
     <h1 style="font-weight: 400">graze</h1>
-    <img src="https://github.com/ImajinDevon/graze/actions/workflows/rust.yml/badge.svg" alt="Rust build status badge">
     <img src="https://github.com/ImajinDevon/graze/actions/workflows/clippy-check.yml/badge.svg" alt="Clippy check status badge">
     <img src="https://github.com/ImajinDevon/graze/actions/workflows/rustfmt-check.yml/badge.svg" alt="Rustfmt check status badge">
 </div>
