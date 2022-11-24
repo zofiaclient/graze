@@ -21,13 +21,13 @@
 //!     message: String
 //! }
 //!
-//! let config = graze::load_from_path("Config.toml", |c| toml::from_str(c))
+//! let config: Config = graze::load_from_path("Config.toml", |c| toml::from_str(c))
 //!     .expect("Could not load configuration");
 //!
 //! println!("{}", config.message);
 //! ```
 
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 use std::path::Path;
 use std::{fmt, fs, io};
 
@@ -65,9 +65,35 @@ where
     }
 }
 
+impl<E> Debug for ConfigurationError<E>
+where
+    E: Display,
+{
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Io(err) => write!(f, "Io({err})"),
+            Self::Deserialize(err) => write!(f, "Deserialize({err}"),
+        }
+    }
+}
+
 pub type Result<T, E> = std::result::Result<T, ConfigurationError<E>>;
 
 /// Load a configuration from the file at the given path.
+///
+/// ```
+/// use serde::Deserialize;
+///
+/// #[derive(Deserialize)]
+/// struct Config {
+///     message: String
+/// }
+///
+///  let config: Config = graze::load_from_path("Config.toml", |c| toml::from_str(c))
+///     .expect("Could not load configuration");
+///
+///  println!("{}", config.message);
+/// ```
 pub fn load_from_path<P, T, E, D>(path: P, deserializer: D) -> Result<T, E>
 where
     P: AsRef<Path>,
@@ -85,7 +111,7 @@ where
 /// ```
 /// use serde::Deserialize;
 ///
-/// #[derive(Deserialize)]
+/// #[derive(Deserialize, Default)]
 /// struct Config {
 ///     message: String
 /// }
@@ -119,6 +145,12 @@ where
 /// #[derive(Serialize, Deserialize)]
 /// struct Config {
 ///     message: String
+/// }
+///
+/// impl Default for Config {
+///     fn default() -> Self {
+///         Self { message: "Hello, world!".to_string() }
+///     }
 /// }
 ///
 /// // If Config.toml exists, deserialize the content using toml::from_str.
