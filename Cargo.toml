@@ -1,0 +1,19 @@
+[package]
+name = "graze"
+version = "0.1.0"
+edition = "2021"
+description = "A zero-boilerplate configuration library."
+authors = ["ImajinDevon"]
+keywords = ["configuration", "file", "config"]
+categories = ["config"]
+repository = "https://github.com/ImajinDevon/graze"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+thiserror = "1.0.37"
+
+[dev-dependencies]
+serde = { version = "1.0.147", features = ["derive"] }
+toml = "0.5.9"
